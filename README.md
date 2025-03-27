@@ -94,6 +94,27 @@ PGX.gameloop()
 ```
 The code should run well! Click the spacebar and hide and show!
 
+## All the `PGX.Event.getkey()` Keys:
+Use this program to learn the keys by clicking them:
+```
+import PGX
+
+win = PGX.GameWindow(300, 300)
+
+def on_draw():
+    PGX.render()
+
+def update(delta_time):
+    key = PGX.Event.getkey()
+    if key != None:
+        print('Key pressed: ', key)
+
+PGX.Event.bind(win)
+win.bind_update(update)
+win.bind_draw(on_draw)
+PGX.gameloop()
+```
+This should show the key name you clicked! Have fun!
 
 
 
