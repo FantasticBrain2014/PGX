@@ -1,6 +1,6 @@
 # PGX 1.0 documentation
 
-## PGX is a simple library for creating 2D games.
+## PGX is a simple python library for creating 2D games.
 ## It includes:
    - Many shape widgets
    - A Camera
