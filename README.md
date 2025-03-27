@@ -9,7 +9,7 @@
 ## Installation:
 You can install PGX by using **pip**. You must do this before writing PGX code:
 ```
-...
+pip install git+https://github.com/FantasticBrain2014/PGX.git
 ```
 
 ## Getting started:
