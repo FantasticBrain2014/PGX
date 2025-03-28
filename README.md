@@ -164,7 +164,7 @@ def move_ball():
         ballx = 3
         score = 0
         score_txt.content(newtext='Score: '+str(score)) # Update what the text says.
-        ball.teleport(win.center()[0], win.center()[0]) # Teleport to the center of the screen.
+        ball.teleport(win.center()[0], win.center()[1]) # Teleport to the center of the screen.
     elif PGX.toch(bat, ball) == True: # Is the ball bouncing off the bat?
         bally = -bally # If so ,bounce off the bat.
         score += 1 # And increase the score by one.
