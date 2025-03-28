@@ -99,7 +99,7 @@ Use this program to learn the keys by clicking them:
 ```
 import PGX
 
-win = PGX.GameWindow(300, 300)
+win = PGX.GameWindow(300, 300) # Just a small window.
 
 def on_draw():
     PGX.render()
@@ -116,6 +116,65 @@ PGX.gameloop()
 ```
 This should show the key name you clicked! Have fun!
 
+## Game: Ball and Bat:
+We'll make a ball and bat game with two new functions: `toch()` and `toch_edge()` that detect colloisions. Let's start!
+```
+import PGX
 
+win = PGX.GameWindow(800, 600)
+win.set_title('Bat & Ball')
+score = 0 # Set some varibles that move the ball and keep score.
+ballx = 3
+bally = 3
 
+hexagon = PGX.hexget(300, 400, 20) # Make points for a hexagon.
+ball = PGX.geometry.Poly(hexagon, col=PGX.col_help.purple, filled=True) # Make a  purple hexagon as the ball.
+bat = PGX.geometry.Quad((400, 75), 60, 20, col=PGX.col_help.blue, filled=True) # Make a rectangle as the bat.
+score_txt = PGX.Text((40, 560), 'Score: '+str(score), col=PGX.col_help.white) # Make a text to show the score.
+
+def on_draw():
+    PGX.render()
+    win.fill(PGX.col_help.dodgerblue4) # Fill the window with dodger blue 4.
+    score_txt.draw() # Draw everything.
+    ball.draw()
+    bat.draw()
+
+def update(delta_time):
+    key = PGX.Event.getkey() # Get the key pressed.
+    if key == 'LEFT': # Is it the left key?
+        bat.moveleft(15) # If so, move left.
+    elif key == 'RIGHT': 
+        bat.moveright(15)
+    edge = PGX.toch_edge(bat, win) Check the edge that the bat is touching.
+    if edge == 'LEFT': # Is it the left edge
+        bat.moveright(15) # If so, move the opposite direction.
+    elif edge == 'RIGHT':
+        bat.moveleft(15)
+    move_ball()
+
+def move_ball():
+    global ballx, bally, score
+    edge = PGX.toch_edge(ball, win) # Find the edge the object is toching.
+    if edge == 'LEFT' or edge == 'RIGHT':
+        ballx = -ballx # Bounce off the left and right sides.
+    elif edge == 'TOP':
+        bally = -bally # Bounce off the top side.
+    elif edge == 'BOTTOM':
+        bally = 3 # If the ball touches the bottom side, reset the game.
+        ballx = 3
+        score = 0
+        score_txt.content(newtext='Score: '+str(score)) # Update what the text says.
+        ball.teleport(win.center()[0], win.center()[0]) # Teleport to the center of the screen.
+    elif PGX.toch(bat, ball) == True: # Is the ball bouncing off the bat?
+        bally = -bally # If so ,bounce off the bat.
+        score += 1 # And increase the score by one.
+        score_txt.content(newtext='Score: '+str(score))
+    ball.move(ballx, bally) # Move diagnolly depending on ballx and bally.
+
+PGX.Event.bind(win)
+win.bind_draw(on_draw)
+win.bind_update(update)
+PGX.gameloop() # Start the game.
+```
+This should work well! You should have learned enough to make your own simple game!
 
