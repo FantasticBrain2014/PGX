@@ -5,17 +5,23 @@ It has lots of easy-to-use widgets and functions.
 """
 
 import arcade
-import math
-from datetime import datetime as dt
-from pyglet import image
-from .col_help import white, black
-from os import path
-from . import Event
-from .toch_geo import are_toch
 from . import geometry
+from .col_help import white, black
+from . import Event
+
+import math
+from .toch_geo import are_toch, xywhToPoints
+
+from os import path
+from pathlib import Path
+
+from PIL import Image
+import tempfile
+import hashlib
+from pyglet import image
 
 _path = path.dirname(__file__)
-ipath = path.join(_path, 'PGXico.png')
+_ipath = path.join(_path, 'PGXico.png')
 # A PGX built-in sprite.
 sprite_bobby = path.join(_path, 'bobby.png')
 
@@ -23,10 +29,10 @@ def color(R, G, B, A=255):
     return (R, G, B, A)
 
 class GameWindow:
-    def __init__(self, dimx, dimy, fullscr=False):
-        self.win = arcade.Window(dimx, dimy, '  PGX 1.0 Game', fullscreen=fullscr)
+    def __init__(self, width, height):
+        self.win = arcade.Window(dimx, dimy, '  PGX 1.0 Game')
         self.res = (dimx, dimy)
-        icon = image.load(ipath)
+        icon = image.load(_ipath)
         self.win.set_icon(icon)
         self.win.on_close = self._on_close
         
@@ -146,14 +152,14 @@ class Text:
 
 
 class Sprite:
-    def __init__(self, center, width, height, image, alpha=255):
+    def __init__(self, center, width, height, image):
         self.defaultimage = image
-        self.sprite = arcade.Sprite(image, 1.0)
+        texture = arcade.load_texture(image)
+        self.sprite = arcade.Sprite(texture, 1.0)
         self.sprite.center_x = center[0]
         self.sprite.center_y = center[1]
         self.sprite.width = width
         self.sprite.height = height
-        self.sprite.alpha = alpha
         self.sprite.angle = 0
         self.yesdraw = True
 
@@ -206,11 +212,27 @@ class Sprite:
 
     def get_points(self):
         return xywhToPoints(self.sprite.center_x, self.sprite.center_y, self.sprite.width, self.sprite.height)
-
-    def is_clicked(self, x, y):
-        left, bottom, right, top = self.get_points()
-        return left <= x <= right and bottom <= y <= top
-        
+    
+def get_trans(image_path):
+    image_path = Path(image_path)
+    im = Image.open(image_path).convert("RGBA") # Convert to RGBA format
+    datas = im.getdata()
+    changed = False
+    new_data = []
+    for item in datas:
+        if item[:3] == (255, 255, 255):
+            new_data.append((255, 255, 255, 0)) 
+            changed = True
+        else:
+            new_data.append(item)
+    if not changed:
+        return str(image_path)
+    im.putdata(new_data)
+    # Save to a temp file
+    hash_name = hashlib.md5(str(image_path).encode()).hexdigest()
+    temp_path = Path(tempfile.gettempdir()) / f"pgx_fixed_{hash_name}.png"
+    im.save(temp_path)
+    return str(temp_path)        
 
 class SpriteGroup:
     def __init__(self):
