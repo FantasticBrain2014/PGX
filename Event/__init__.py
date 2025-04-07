@@ -116,4 +116,5 @@ def bind(window):
     window.win.on_key_press = _on_key_press
     window.win.on_mouse_press = _on_mouse_press
 
-
+__all__ = ['bind', 'click', 'getclickangle', 'getclickpos',
+           'getkey', 'rightclick', 'specialclick']
