@@ -121,7 +121,6 @@ class Text:
         self.update_text()
 
     def update_text(self):
-        """Creates or updates the arcade.Text object"""
         self.arcade_text = arcade.Text(
             self.text,
             self.center[0],
@@ -251,7 +250,6 @@ class SpriteGroup:
             sprite.draw()        
 
 class Camera:
-    '''A Camera to view a world.'''
     def __init__(self, viewarea, zoom=1.0):
         self.zoom = zoom
         self.world = viewarea
@@ -261,30 +259,24 @@ class Camera:
         self.set_pos(0, 0)
 
     def update_view(self):
-        """Call this every frame to apply camera settings."""
         self.cam.use()
 
     def set_pos(self, x, y):
-        """Move the camera to a new position."""
         self.cam.position = arcade.Vec2(x, y)
         self.coords = (x, y)
 
     def zoom_in(self, value):
-        """Increase zoom level."""
         self.zoom += value
         self.cam.zoom = self.zoom
 
     def zoom_out(self, value):
-        """Decrease zoom level."""
         self.zoom -= value
         self.cam.zoom = self.zoom
 
     def getcoords(self):
-        ''' Get the coordinates of the camera.'''
         return self.coords
 
 def toch(obj, obj2):
-    ''' Detect if an object(obj) touches another object(obj2).'''
     if 'circle' in dir(obj):
         o1list = obj.get_box()
     if 'circle' in dir(obj2):
@@ -296,7 +288,6 @@ def toch(obj, obj2):
     return are_toch(o1list, o2list)
 
 def toch_group(obj, group):
-    ''' Detect if an object(obj) touches a group.'''
     istrue = []
     for gobj in group.sprites:
         istoch = toch(obj, gobj)
@@ -307,7 +298,6 @@ def toch_group(obj, group):
     return False
 
 def toch_groups(obj, groups):
-    ''' Detect if an object touches a list of groups.'''
     istrue = []
     for group in groups:
         istoch = toch_group(obj, gobj)
@@ -318,8 +308,6 @@ def toch_groups(obj, groups):
     return False
 
 def toch_edge(obj, win):
-    ''' Detect if an object(obj) is touching the edge of win
-    and return the side or False.'''
     x, y = win.res  # Window width and height
     if 'circle' in dir(obj):  
         olist = obj.get_box()
@@ -341,3 +329,11 @@ def toch_edge(obj, win):
 def gameloop():
     ''' Run the main loop of PGX.'''
     arcade.run()
+
+__all__ = ['Camera', 'Event', 'GameWindow', 'Sprite', 'SpriteGroup', 'Text',
+           'col_help', 'color', 'gameloop', 'geometry', 'get_trans', 'hexget',
+           'render', 'sound', 'soundOGG', 'sprite_bobby',
+           'toch', 'toch_edge', 'toch_group', 'toch_groups']
+
+
+
