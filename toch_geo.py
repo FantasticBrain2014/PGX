@@ -2,10 +2,10 @@ from typing import List, Tuple
 
 Point = Tuple[float, float]
 
-def xywhToPoints(x: float, y: float, w: float, h: float) -> List[Point]:
+def xywhToPoints(x: float, y: float, w: float, h: float):
     return [(x, y), (x + w, y), (x + w, y + h), (x, y + h)]
 
-def cirBox(center, rx, ry):
+def cirBox(center: Point, rx: float, ry: float):
     cx, cy = center
     return [(cx - rx, cy - ry), (cx + rx, cy - ry), (cx + rx, cy + ry), (cx - rx, cy + ry)]
 
@@ -30,4 +30,4 @@ def are_toch(poly_a: List[Point], poly_b: List[Point]) -> bool:
                 return False
     return True 
 
-
+__all__ = ['are_toch', 'cirBox', 'xywhToPoints']
