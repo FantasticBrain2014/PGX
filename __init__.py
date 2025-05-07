@@ -153,7 +153,7 @@ class Text:
 class Sprite:
     def __init__(self, center, width, height, image, get_alpha=False):
         if get_alpha == True:
-            image = getTrans(image)
+            image = _getTrans(image)
         self.defaultimage = image
         texture = arcade.load_texture(image)
         self.sprite = arcade.Sprite(texture, 1.0)
