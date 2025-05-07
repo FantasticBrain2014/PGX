@@ -326,5 +326,34 @@ class Arc:
     def get_box(self):
         return cirBox(self.center, self.x, self.y)
 
+class Parabola:
+    def __init__(self, start, end, height, col=black, filled=False):
+        self.start = start
+        self.end = end
+        self.height = height
+        self.col = col
+        self.filled = filled
+        self.yesdraw = True
+        self.thickness = 4
 
-__all__ = ['Arc', 'Circle', 'Line', 'Poly', 'Quad', 'Trio']
+    def draw(self):
+        if self.yesdraw:
+            if self.filled:
+                arcade.draw_parabola_filled(self.start[0], self.start[1], self.end, self.height, self.col)
+            else:
+                arcade.draw_parabola_outline(self.start[0], self.start[1], self.end,
+                                            self.height, self.col, self.thickness)
+
+    def hide(self):
+        self.yesdraw = False
+
+    def show(self):
+        self.yesdraw = True
+
+    def distort_shape(self, start, end):
+        self.start = start
+        self.end = end
+
+
+
+__all__ = ['Arc', 'Circle', 'Line', 'Parabola', 'Poly', 'Quad', 'Trio']
