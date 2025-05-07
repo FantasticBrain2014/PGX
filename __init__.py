@@ -30,8 +30,8 @@ def color(R, G, B, A=255):
 
 class GameWindow:
     def __init__(self, width, height):
-        self.win = arcade.Window(dimx, dimy, '  PGX 1.0 Game')
-        self.res = (dimx, dimy)
+        self.win = arcade.Window(width, height, '  PGX 1.0 Game')
+        self.res = (width, height)
         icon = image.load(_ipath)
         self.win.set_icon(icon)
         self.win.on_close = self._on_close
@@ -151,7 +151,9 @@ class Text:
 
 
 class Sprite:
-    def __init__(self, center, width, height, image):
+    def __init__(self, center, width, height, image, get_alpha=False):
+        if get_alpha == True:
+            image = getTrans(image)
         self.defaultimage = image
         texture = arcade.load_texture(image)
         self.sprite = arcade.Sprite(texture, 1.0)
@@ -212,7 +214,7 @@ class Sprite:
     def get_points(self):
         return xywhToPoints(self.sprite.center_x, self.sprite.center_y, self.sprite.width, self.sprite.height)
     
-def get_trans(image_path):
+def _getTrans(image_path):
     image_path = Path(image_path)
     im = Image.open(image_path).convert("RGBA") # Convert to RGBA format
     datas = im.getdata()
@@ -331,7 +333,7 @@ def gameloop():
     arcade.run()
 
 __all__ = ['Camera', 'Event', 'GameWindow', 'Sprite', 'SpriteGroup', 'Text',
-           'col_help', 'color', 'gameloop', 'geometry', 'get_trans', 'hexget',
+           'col_help', 'color', 'gameloop', 'geometry', 'hexget',
            'render', 'sound', 'soundOGG', 'sprite_bobby',
            'toch', 'toch_edge', 'toch_group', 'toch_groups']
 
